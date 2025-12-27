@@ -142,19 +142,24 @@ const Home: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center z-10 relative">
           <div className="lg:col-span-8">
-            <h1 className="text-[11vw] lg:text-[9vw] font-black font-syne leading-[0.8] tracking-tighter uppercase  mb-12">
+            <h1 className="text-[11vw] lg:text-[8vw] font-black font-syne leading-[0.8] tracking-tighter uppercase  mb-12">
               <span className="block edu-header">Master</span>
               <span
-                className={`block edu-header text-outline transition-colors ${isDarkMode ? "text-white/20" : "text-black/10"
-                  }`}
+                className="block edu-header transition-all duration-500"
                 style={{
-                  WebkitTextStroke: isDarkMode
-                    ? "2px rgba(255, 255, 255, 0.2)"
-                    : "2px rgba(0, 0, 0, 0.1)",
+                  backgroundImage:
+                    "linear-gradient(90deg, #00E5FF 0%, #2D9CFF 30%, #7B61FF 55%, #C44CFF 75%, #FF2CDF 100%)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",                 // ⬅️ ensures fill comes from gradient
+                  WebkitTextFillColor: "transparent",   // ⬅️ CRITICAL: fills letters properly
+                  filter:
+                    "drop-shadow(0 0 10px rgba(0,229,255,0.35)) drop-shadow(0 0 18px rgba(196,76,255,0.35))",
                 }}
               >
                 The Future
               </span>
+
               <span className="block edu-header">Syllabus.</span>
             </h1>
 
@@ -642,23 +647,19 @@ const Home: React.FC = () => {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
 
           <div className="relative z-10">
-            <h2 className="text-4xl md:text-7xl font-black font-syne mb-10 tracking-tighter leading-none  uppercase">
+            <h2 className="text-4xl md:text-7xl font-black font-syne mb-10 tracking-tighter leading-none">
               Ready to Transform <br /> Your Potential?
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
               <Link
-                to="/signup"
-                className={`px-12 py-6 rounded-[2.5rem] font-black text-2xl hover:scale-105 active:scale-95 transition-all shadow-2xl ${isDarkMode
+                to="/callback"
+                className={`px-12 py-6 rounded-[2.5rem] font-black text-2xl transition-all shadow-2xl ${isDarkMode
                   ? "bg-cyan-500 text-white hover:bg-cyan-400"
                   : "bg-white text-black"
                   }`}
               >
                 Enroll in Excellence
               </Link>
-              <p className="text-xl font-medium opacity-60 max-w-xs text-left hidden md:block">
-                Scholarships and early-bird grants valid for the current intake
-                cycle.
-              </p>
             </div>
           </div>
         </div>

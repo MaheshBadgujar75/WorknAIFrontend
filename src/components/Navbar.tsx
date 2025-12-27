@@ -20,7 +20,6 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Courses', path: '/courses' },
-    { name: 'Bootcamp', path: '/bootcamp' },
     { name: 'Contact', path: '/callback' },
   ];
 
@@ -36,24 +35,33 @@ const Navbar: React.FC = () => {
           className={`flex items-center gap-3 pointer-events-auto group transition-all duration-500 ${isScrolled ? 'scale-90' : 'scale-100'
             }`}
         >
-          <div className={`h-12 w-12 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white shadow-xl shadow-black/20'
+          <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white shadow-xl shadow-black/20'
             }`}>
-            <span className="font-syne font-black text-2xl">W</span>
+            <img src="/Logo2.jpeg" alt="WorknAI Logo" />
           </div>
           <div className="flex flex-col">
-            <span className={`font-syne font-black text-xl tracking-tighter leading-none ${isDarkMode ? 'text-white' : 'text-zinc-900'}`}>
+            <span
+              className="block edu-header transition-all duration-500 font-bold font-syne text-2xl"
+              style={{
+                backgroundImage:
+                  "linear-gradient(90deg, #00E5FF 0%, #2D9CFF 30%, #7B61FF 55%, #C44CFF 75%, #FF2CDF 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",                 // ⬅️ ensures fill comes from gradient
+                WebkitTextFillColor: "transparent",   // ⬅️ CRITICAL: fills letters properly
+                filter:
+                  "drop-shadow(0 0 10px rgba(0,229,255,0.35)) drop-shadow(0 0 18px rgba(196,76,255,0.35))",
+              }}
+            >
               WorknAI
-            </span>
-            <span className={`text-[8px] font-bold uppercase tracking-[0.3em] opacity-40 ${isDarkMode ? 'text-white' : 'text-zinc-900'}`}>
-              Technologies
             </span>
           </div>
         </Link>
 
         {/* Center Segment: Navigation Links */}
         <div className={`hidden lg:flex items-center gap-1 p-1 rounded-full border liquid-glass pointer-events-auto transition-all duration-500 shadow-xl ${isDarkMode
-            ? 'bg-zinc-900/80 border-white/10 shadow-black/40'
-            : 'bg-white/90 border-zinc-200 shadow-zinc-200/50'
+          ? 'bg-zinc-900/80 border-white/10 shadow-black/40'
+          : 'bg-white/90 border-zinc-200 shadow-zinc-200/50'
           } ${isScrolled ? 'scale-95' : 'scale-100'}`}>
           {navLinks.map((link) => {
             const active = isActive(link.path);
@@ -62,8 +70,8 @@ const Navbar: React.FC = () => {
                 key={link.path}
                 to={link.path}
                 className={`relative px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all ${active
-                    ? (isDarkMode ? 'text-white' : 'text-zinc-900')
-                    : 'text-zinc-500 hover:text-zinc-400'
+                  ? (isDarkMode ? 'text-white' : 'text-zinc-900')
+                  : 'text-zinc-500 hover:text-zinc-400'
                   }`}
               >
                 <span className="relative z-10">{link.name}</span>
@@ -86,8 +94,8 @@ const Navbar: React.FC = () => {
           <button
             onClick={toggleTheme}
             className={`w-11 h-11 flex items-center justify-center rounded-xl transition-all border ${isDarkMode
-                ? 'border-white/10 text-white hover:bg-white/5'
-                : 'border-zinc-200 text-zinc-900 hover:bg-zinc-100 shadow-sm'
+              ? 'border-white/10 text-white hover:bg-white/5'
+              : 'border-zinc-200 text-zinc-900 hover:bg-zinc-100 shadow-sm'
               }`}
           >
             {isDarkMode ? (
@@ -100,8 +108,8 @@ const Navbar: React.FC = () => {
           <Link
             to="/signin"
             className={`px-8 py-3 rounded-xl font-black text-[11px] uppercase tracking-widest transition-all ${isDarkMode
-                ? 'bg-white text-black hover:bg-zinc-200 shadow-xl shadow-black/20'
-                : 'bg-black text-white hover:bg-zinc-800 shadow-xl shadow-black/20'
+              ? 'bg-white text-black hover:bg-zinc-200 shadow-xl shadow-black/20'
+              : 'bg-black text-white hover:bg-zinc-800 shadow-xl shadow-black/20'
               }`}
           >
             Login

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import coursesApi, { type Course } from '../services/api';
 import { DataContext } from '../src/context';
 import ThemeProvider from '../src/Themeprovider';
@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 // AppContent component - handles routing and layout
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const isAuthPage = 
+  const isAuthPage =
     location.pathname === '/signin' ||
     location.pathname === '/signup' ||
     location.pathname === '/callback';

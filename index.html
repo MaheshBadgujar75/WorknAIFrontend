@@ -5,19 +5,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WorknAi Academy</title>
-  
+
   <!-- Preconnect for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
+
   <!-- Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
     rel="stylesheet">
-  
+
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Tailwind Config -->
   <script>
     tailwind.config = {
@@ -56,7 +56,7 @@
       }
     }
   </script>
-  
+
   <!-- Import Map for ES Modules -->
   <script type="importmap">
 {
@@ -71,7 +71,7 @@
   }
 }
   </script>
-  
+
   <!-- Custom Styles -->
   <style>
     /* CSS Variables */
@@ -133,7 +133,7 @@
 
     /* Blueprint Grid Pattern */
     .blueprint-grid {
-      background-image: 
+      background-image:
         linear-gradient(to right, currentColor 1px, transparent 1px),
         linear-gradient(to bottom, currentColor 1px, transparent 1px);
       background-size: 40px 40px;
@@ -163,19 +163,6 @@
       will-change: transform;
     }
 
-    .cursor-outline {
-      width: 40px;
-      height: 40px;
-      border: 1px solid rgba(6, 182, 212, 0.5);
-      position: fixed;
-      pointer-events: none;
-      z-index: 9998;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: all 0.2s ease-out;
-      will-change: transform;
-    }
-
     /* Reveal Animation */
     .reveal {
       opacity: 0;
@@ -200,7 +187,7 @@
       -webkit-backdrop-filter: blur(20px) saturate(160%);
     }
 
-    /* Paper Texture */
+    /* Paper Texture Background */
     .paper-texture {
       background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
     }
@@ -221,6 +208,7 @@
       0% {
         transform: translateX(0);
       }
+
       100% {
         transform: translateX(-50%);
       }
@@ -241,11 +229,12 @@
 
     /* Hide cursor elements on touch devices */
     @media (hover: none) and (pointer: coarse) {
+
       .cursor-dot,
       .cursor-outline {
         display: none;
       }
-      
+
       body {
         cursor: auto;
       }
@@ -258,6 +247,7 @@
 
     /* Reduced Motion Support */
     @media (prefers-reduced-motion: reduce) {
+
       *,
       *::before,
       *::after {
@@ -270,47 +260,48 @@
   </style>
 </head>
 
-<body class="bg-zinc-50 dark:bg-black text-zinc-900 dark:text-white selection:bg-accent-cyan selection:text-black paper-texture">
+<body
+  class="bg-zinc-50 dark:bg-black text-zinc-900 dark:text-white selection:bg-accent-cyan selection:text-black paper-texture">
   <!-- Custom Cursor Elements -->
   <div class="cursor-dot" id="cursor-dot"></div>
   <div class="cursor-outline" id="cursor-outline"></div>
-  
+
   <!-- React Root -->
   <div id="root"></div>
-  
+
   <!-- Custom Cursor Script -->
   <script>
     // Check if device supports hover (not touch device)
     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
       const dot = document.getElementById('cursor-dot');
       const outline = document.getElementById('cursor-outline');
-      
+
       // Use requestAnimationFrame for smooth cursor movement
       let cursorX = 0;
       let cursorY = 0;
       let currentX = 0;
       let currentY = 0;
-      
+
       document.addEventListener('mousemove', (e) => {
         cursorX = e.clientX;
         cursorY = e.clientY;
       });
-      
+
       // Smooth cursor animation
       function animateCursor() {
         currentX += (cursorX - currentX) * 0.2;
         currentY += (cursorY - currentY) * 0.2;
-        
+
         dot.style.left = currentX + 'px';
         dot.style.top = currentY + 'px';
         outline.style.left = cursorX + 'px';
         outline.style.top = cursorY + 'px';
-        
+
         requestAnimationFrame(animateCursor);
       }
-      
+
       animateCursor();
-      
+
       // Interaction with links and buttons
       document.addEventListener('mouseover', (e) => {
         if (e.target.closest('a') || e.target.closest('button')) {
@@ -320,7 +311,7 @@
           dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
         }
       });
-      
+
       document.addEventListener('mouseout', (e) => {
         if (e.target.closest('a') || e.target.closest('button')) {
           outline.style.width = '40px';
@@ -329,20 +320,20 @@
           dot.style.transform = 'translate(-50%, -50%) scale(1)';
         }
       });
-      
+
       // Click effect
       document.addEventListener('mousedown', () => {
         outline.style.transform = 'translate(-50%, -50%) scale(0.8)';
         dot.style.transform = 'translate(-50%, -50%) scale(0.5)';
       });
-      
+
       document.addEventListener('mouseup', () => {
         outline.style.transform = 'translate(-50%, -50%) scale(1)';
         dot.style.transform = 'translate(-50%, -50%) scale(1)';
       });
     }
   </script>
-  
+
   <!-- Main Application Script -->
   <script type="module" src="/src/main.tsx"></script>
 </body>

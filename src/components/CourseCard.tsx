@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTheme } from "../context";
@@ -25,6 +25,7 @@ interface Props {
 
 const CourseCard: React.FC<Props> = ({ course }) => {
   const { isDarkMode } = useTheme();
+  const [imageError, setImageError] = useState(false);
 
   // Calculate discount percentage
   const discountPercent = course.originalPrice > course.discountedPrice
@@ -40,9 +41,17 @@ const CourseCard: React.FC<Props> = ({ course }) => {
   // Determine if it's a high discount (for badge)
   const isHighDiscount = discountPercent >= 40;
 
-  // Use certificate image or fallback to placeholder
-  const cardImage = course.certificateImage ||
-    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000&auto=format&fit=crop";
+  // Fallback image
+  const fallbackImage = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000&auto=format&fit=crop";
+
+  // Use certificate image from database, or fallback if not available or error occurred
+  const cardImage = !imageError && course.certificateImage 
+    ? course.certificateImage 
+    : fallbackImage;
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <motion.div
@@ -60,10 +69,7 @@ const CourseCard: React.FC<Props> = ({ course }) => {
           src={cardImage}
           alt={course.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-          onError={(e) => {
-            // Fallback image if the certificateImage fails to load
-            e.currentTarget.src = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000&auto=format&fit=crop";
-          }}
+          onError={handleImageError}
         />
         <div
           className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}

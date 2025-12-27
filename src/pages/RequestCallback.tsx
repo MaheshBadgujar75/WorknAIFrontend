@@ -4,10 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { COURSES } from '../../constants';
 import gsap from 'gsap';
 
+// Replace this with your actual Google Apps Script Web App URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQoihOtHzRs8RdQY-C45ngLfJ4_HBu5euiLKd_Tl-KLZiv0ABK105KmS0lYeW2zcpD/exec';
+
+
 const RequestCallback: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -49,25 +54,51 @@ const RequestCallback: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!selectedCourse) {
       alert("Please select a track to proceed.");
       return;
     }
+
     setIsSubmitting(true);
+    setError(null);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const data = {
-      ...Object.fromEntries(formData.entries()),
-      course: selectedCourse
+      name: formData.get('name') as string,
+      phone: formData.get('phone') as string,
+      course: selectedCourse,
+      slot: formData.get('slot') as string,
     };
 
-    console.log("Sending to Academic Sheet:", data);
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    // Mock API delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log("Data sent successfully:", data);
 
-    setIsSubmitting(false);
-    setIsSuccess(true);
+      setIsSuccess(true);
+      (e.target as HTMLFormElement).reset();
+      setSelectedCourse(null);
+
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      setError("Failed to submit. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+
+  };
+
+  const handleNewRequest = () => {
+    setIsSuccess(false);
+    setError(null);
   };
 
   return (
@@ -137,8 +168,8 @@ const RequestCallback: React.FC = () => {
                     type="text"
                     placeholder="ENTER NAME"
                     className={`w-full h-12 md:h-14 px-6 rounded-xl border-2 outline-none transition-all font-bold text-xs ${isDarkMode
-                        ? 'bg-zinc-950/50 border-zinc-800 focus:border-cyan-500/50 text-white placeholder-zinc-500'
-                        : 'bg-zinc-50 border-zinc-100 focus:border-black placeholder-zinc-300'
+                      ? 'bg-zinc-950/50 border-zinc-800 focus:border-cyan-500/50 text-white placeholder-zinc-500'
+                      : 'bg-zinc-50 border-zinc-100 focus:border-black placeholder-zinc-300'
                       }`}
                   />
                 </div>
@@ -151,9 +182,11 @@ const RequestCallback: React.FC = () => {
                       name="phone"
                       type="tel"
                       placeholder="+91 00000 00000"
+                      pattern="[+]?[0-9\s-]{10,15}"
+                      title="Please enter a valid phone number"
                       className={`w-full h-12 md:h-14 px-6 rounded-xl border-2 outline-none transition-all font-bold text-xs ${isDarkMode
-                          ? 'bg-zinc-950/50 border-zinc-800 focus:border-cyan-500/50 text-white placeholder-zinc-500'
-                          : 'bg-zinc-50 border-zinc-100 focus:border-black placeholder-zinc-300'
+                        ? 'bg-zinc-950/50 border-zinc-800 focus:border-cyan-500/50 text-white placeholder-zinc-500'
+                        : 'bg-zinc-50 border-zinc-100 focus:border-black placeholder-zinc-300'
                         }`}
                     />
                   </div>
@@ -165,8 +198,8 @@ const RequestCallback: React.FC = () => {
                       type="button"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                       className={`w-full h-12 md:h-14 px-6 rounded-xl border-2 transition-all font-bold text-xs flex items-center justify-between group ${isDarkMode
-                          ? 'bg-zinc-950/50 border-zinc-800 text-white'
-                          : 'bg-zinc-50 border-zinc-100 text-zinc-900'
+                        ? 'bg-zinc-950/50 border-zinc-800 text-white'
+                        : 'bg-zinc-50 border-zinc-100 text-zinc-900'
                         } ${isDropdownOpen ? 'border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.2)]' : ''}`}
                     >
                       <span className={!selectedCourse ? (isDarkMode ? 'text-zinc-500' : 'text-zinc-400') : (isDarkMode ? 'text-white' : 'text-zinc-900')}>
@@ -188,8 +221,8 @@ const RequestCallback: React.FC = () => {
                           exit={{ opacity: 0, y: 5, scale: 0.98 }}
                           transition={{ duration: 0.2, ease: "easeOut" }}
                           className={`absolute left-0 right-0 mt-2 p-2 rounded-2xl border shadow-[0_20px_50px_rgba(0,0,0,0.3)] backdrop-blur-3xl overflow-hidden max-h-[220px] overflow-y-auto ${isDarkMode
-                              ? 'bg-zinc-900/95 border-zinc-800 shadow-cyan-950/30'
-                              : 'bg-white/95 border-zinc-200 shadow-black/10'
+                            ? 'bg-zinc-900/95 border-zinc-800 shadow-cyan-950/30'
+                            : 'bg-white/95 border-zinc-200 shadow-black/10'
                             }`}
                         >
                           {COURSES.map((c) => (
@@ -201,8 +234,8 @@ const RequestCallback: React.FC = () => {
                                 setIsDropdownOpen(false);
                               }}
                               className={`w-full text-left px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${selectedCourse === c.name
-                                  ? (isDarkMode ? 'bg-cyan-500 text-white' : 'bg-black text-white')
-                                  : (isDarkMode ? 'hover:bg-white/10 text-zinc-400 hover:text-white' : 'hover:bg-zinc-100 text-zinc-500 hover:text-black')
+                                ? (isDarkMode ? 'bg-cyan-500 text-white' : 'bg-black text-white')
+                                : (isDarkMode ? 'hover:bg-white/10 text-zinc-400 hover:text-white' : 'hover:bg-zinc-100 text-zinc-500 hover:text-black')
                                 }`}
                             >
                               {c.name}
@@ -219,7 +252,7 @@ const RequestCallback: React.FC = () => {
                   <div className="grid grid-cols-3 gap-2">
                     {['Morning', 'Afternoon', 'Evening'].map((slot) => (
                       <label key={slot} className="cursor-pointer group">
-                        <input type="radio" name="slot" value={slot} className="hidden peer" defaultChecked={slot === 'Morning'} />
+                        <input type="radio" name="slot" value={slot} className="hidden peer" required defaultChecked={slot === 'Morning'} />
                         <div className={`py-3 rounded-lg border-2 text-center text-[9px] font-black uppercase tracking-widest transition-all peer-checked:border-cyan-500 peer-checked:bg-cyan-500/10 ${isDarkMode ? 'bg-zinc-900/50 border-zinc-800 text-zinc-200' : 'bg-zinc-50 border-zinc-100 text-zinc-500'
                           }`}>
                           {slot}
@@ -229,17 +262,24 @@ const RequestCallback: React.FC = () => {
                   </div>
                 </div>
 
+                {error && (
+                  <div className="form-item">
+                    <p className="text-red-500 text-xs font-bold text-center">{error}</p>
+                  </div>
+                )}
+
                 <div className="form-item pt-2 z-[0]">
                   <button
+                    type="submit"
                     disabled={isSubmitting}
-                    className={`w-full py-5 lg:py-6 rounded-[1.5rem] md:rounded-[1.8rem] font-black text-sm lg:text-base uppercase tracking-widest transition-all transform hover:scale-[1.02] active:scale-95 shadow-2xl flex items-center justify-center gap-3 ${isDarkMode
-                        ? 'bg-cyan-500 text-white hover:bg-cyan-400 shadow-cyan-900/20'
-                        : 'bg-black text-white hover:bg-zinc-800 shadow-black/20'
+                    className={`w-full py-5 lg:py-6 rounded-[1.5rem] md:rounded-[1.8rem] font-black text-sm lg:text-base uppercase tracking-widest transition-all transform hover:scale-[1.02] active:scale-95 shadow-2xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed ${isDarkMode
+                      ? 'bg-cyan-500 text-white hover:bg-cyan-400 shadow-cyan-900/20'
+                      : 'bg-black text-white hover:bg-zinc-800 shadow-black/20'
                       }`}>
                     {isSubmitting ? (
                       <>
                         <span className="animate-spin h-4 w-4 border-2 rounded-full border-t-transparent border-white"></span>
-                        Exporting...
+                        Submitting...
                       </>
                     ) : (
                       <>
@@ -283,8 +323,8 @@ const RequestCallback: React.FC = () => {
                   </p>
                 </div>
                 <button
-                  onClick={() => setIsSuccess(false)}
-                  className={`px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest border-2 transition-all ${isDarkMode ? 'border-zinc-800 text-white hover:border-cyan-500' : 'border-zinc-200 text-zinc-900 hover:border-black'}`}
+                  onClick={handleNewRequest}
+                  className={`px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest border-2 transition-all hover:scale-105 active:scale-95 ${isDarkMode ? 'border-zinc-800 text-white hover:border-cyan-500' : 'border-zinc-200 text-zinc-900 hover:border-black'}`}
                 >
                   New Request
                 </button>
@@ -301,9 +341,9 @@ const RequestCallback: React.FC = () => {
         transition={{ delay: 1 }}
         className="mt-8 mb-8 lg:mt-0 lg:mb-0 lg:absolute lg:bottom-8 flex items-center gap-6 md:gap-8 opacity-20 select-none pointer-events-none grayscale flex-wrap justify-center"
       >
-        <div className="font-syne font-black text-lg md:text-xl tracking-tighter uppercase italic">Honesty.</div>
-        <div className="font-syne font-black text-lg md:text-xl tracking-tighter uppercase italic">Genuinity.</div>
-        <div className="font-syne font-black text-lg md:text-xl tracking-tighter uppercase italic">Precision.</div>
+        <div className="font-syne font-black text-lg md:text-xl tracking-tighter">Honesty.</div>
+        <div className="font-syne font-black text-lg md:text-xl tracking-tighter">Genuinity.</div>
+        <div className="font-syne font-black text-lg md:text-xl tracking-tighter">Precision.</div>
       </motion.div>
     </div>
   );

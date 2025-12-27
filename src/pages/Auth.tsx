@@ -75,11 +75,8 @@ const Auth: React.FC<Props> = ({ type }) => {
             >
               <Link to="/" className="flex items-center gap-4 group">
                 <div className="h-14 w-14 rounded-2xl bg-zinc-900/10 dark:bg-zinc-100/10 p-2 overflow-hidden transition-transform group-hover:scale-110">
-                  <img src="/Logo.jpeg" alt="WorknAI Official Brand" className="w-full h-full object-contain" />
+                  <img src="/Logo2.jpeg" alt="WorknAI Official Brand" className="w-full h-full object-contain" />
                 </div>
-                <span className={`font-syne font-black text-2xl tracking-tighter leading-none ${isDarkMode ? 'text-white' : 'text-zinc-900'}`}>
-                  WorknAI
-                </span>
               </Link>
             </motion.div>
           </div>

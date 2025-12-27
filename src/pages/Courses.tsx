@@ -154,17 +154,6 @@ const Courses: React.FC = () => {
         />
 
         <div className="flex flex-col items-center text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className={`inline-flex items-center gap-2 px-6 py-2 rounded-full border mb-6 text-[10px] font-black tracking-widest uppercase ${isDarkMode
-                ? "bg-zinc-900/50 border-cyan-500/30 text-cyan-400"
-                : "bg-zinc-100 border-zinc-300 text-zinc-700"
-              }`}
-          >
-            Industrial Specializations
-          </motion.div>
-
           <h1
             className={`text-6xl md:text-8xl lg:text-9xl font-syne font-black font-light flex justify-center mb-4 tracking-tighter leading-none ${isDarkMode ? "text-white" : "text-black"
               }`}
@@ -196,8 +185,8 @@ const Courses: React.FC = () => {
       <section className="courses-filter-bar max-w-[1600px] mx-auto mb-16 relative z-50">
         <div
           className={`p-4 md:p-6 rounded-[2.5rem] border refractive-border liquid-glass flex flex-col lg:flex-row items-center justify-between gap-6 ${isDarkMode
-              ? "bg-zinc-900/80 border-zinc-700/30"
-              : "bg-white border-zinc-200 shadow-xl shadow-black/5"
+            ? "bg-zinc-900/80 border-zinc-700/30"
+            : "bg-white border-zinc-200 shadow-xl shadow-black/5"
             }`}
         >
           <div className="flex flex-col md:flex-row items-center gap-6 w-full lg:w-auto">
@@ -209,27 +198,10 @@ const Courses: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={`w-full py-4 px-12 rounded-2xl border-2 outline-none font-bold text-sm transition-all ${isDarkMode
-                    ? "bg-zinc-800 border-zinc-700 focus:border-cyan-500 text-white placeholder:text-zinc-500"
-                    : "bg-zinc-50 border-zinc-200 focus:border-black text-black placeholder:text-zinc-400"
+                  ? "bg-zinc-800 border-zinc-700 focus:border-cyan-500 text-white placeholder:text-zinc-500"
+                  : "bg-zinc-50 border-zinc-200 focus:border-black text-black placeholder:text-zinc-400"
                   }`}
               />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className={`w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${isDarkMode
-                    ? "text-zinc-500 group-focus-within:text-cyan-400"
-                    : "text-zinc-400 group-focus-within:text-black"
-                  }`}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                />
-              </svg>
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
@@ -273,12 +245,12 @@ const Courses: React.FC = () => {
                     key={status.value}
                     onClick={() => setStatusFilter(status.value as StatusFilter)}
                     className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${statusFilter === status.value
-                        ? isDarkMode
-                          ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/40"
-                          : "bg-black text-white"
-                        : isDarkMode
-                          ? "bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700"
-                          : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                      ? isDarkMode
+                        ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/40"
+                        : "bg-black text-white"
+                      : isDarkMode
+                        ? "bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700"
+                        : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
                       }`}
                   >
                     {status.label}
@@ -306,12 +278,12 @@ const Courses: React.FC = () => {
                     key={opt.value}
                     onClick={() => setSortOption(opt.value as SortOption)}
                     className={`px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${sortOption === opt.value
-                        ? isDarkMode
-                          ? "bg-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/40"
-                          : "bg-blue-600 text-white"
-                        : isDarkMode
-                          ? "bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700"
-                          : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                      ? isDarkMode
+                        ? "bg-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/40"
+                        : "bg-blue-600 text-white"
+                      : isDarkMode
+                        ? "bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700"
+                        : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
                       }`}
                   >
                     {opt.label}
@@ -375,8 +347,8 @@ const Courses: React.FC = () => {
             <button
               onClick={() => window.location.reload()}
               className={`px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${isDarkMode
-                  ? "bg-cyan-500 text-white hover:bg-cyan-600"
-                  : "bg-black text-white hover:bg-zinc-800"
+                ? "bg-cyan-500 text-white hover:bg-cyan-600"
+                : "bg-black text-white hover:bg-zinc-800"
                 }`}
             >
               Retry
@@ -474,8 +446,8 @@ const Courses: React.FC = () => {
                 <button
                   onClick={handleClearFilters}
                   className={`mt-8 px-8 py-3 rounded-full border-2 font-black text-xs uppercase tracking-widest transition-all ${isDarkMode
-                      ? "border-zinc-700 text-zinc-300 hover:bg-zinc-800"
-                      : "border-zinc-300 text-zinc-700 hover:bg-zinc-100"
+                    ? "border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+                    : "border-zinc-300 text-zinc-700 hover:bg-zinc-100"
                     }`}
                 >
                   Clear Filters
